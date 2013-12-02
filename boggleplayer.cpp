@@ -36,4 +36,3 @@ void getCustomBoard(string** &new_board, unsigned int *rows, unsigned int *cols)
 {
 }
 
-#endif // BOGGLEPLAYER_H
