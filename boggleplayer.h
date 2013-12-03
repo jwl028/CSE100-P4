@@ -4,13 +4,13 @@
 #include <set>
 #include <vector>
 #include <string>
+#include "boggleutil.h"
 
 using std::vector;
 using std::set;
 using std::string;
 
-class BogglePlayer : public BaseBogglePlayer
-{
+class BogglePlayer : public BaseBogglePlayer {
   public:
     void buildLexicon(const set<string>& word_list);
     void setBoard(unsigned int rows, unsigned int cols, string** diceArray);
@@ -18,7 +18,13 @@ class BogglePlayer : public BaseBogglePlayer
     bool isInLexicon(const string& word_to_check);
     vector<int> isOnBoard(const string& word_to_check);
     void getCustomBoard(string** &new_board, unsigned int *rows, unsigned int *cols);
-    ~BaseBogglePlayer() {}
+    ~BogglePlayer() {}
+
+  private:
+    unsigned int rows;
+    unsigned int cols;
+    string **boggleboard;
+    void clearBoard();
 };
 
 #endif // BOGGLEPLAYER_H

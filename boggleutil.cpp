@@ -1,6 +1,6 @@
 #include "boggleutil.h"
 
-void build(const set<string>& word_list)
+void Trie::build(const set<string>& word_list)
 {
   int wordCount = 0;
   TrieNode* currNode;
