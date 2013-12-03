@@ -13,6 +13,7 @@ void buildLexicon(const set<string>& word_list)
    
 void setBoard(unsigned int rows, unsigned int cols, string** diceArray)
 {
+  
 }
  
 bool getAllValidWords(unsigned int minimum_word_length, set<string>* words)
