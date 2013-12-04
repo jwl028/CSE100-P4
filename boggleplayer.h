@@ -29,7 +29,7 @@ class BogglePlayer : public BaseBogglePlayer {
     bool setBoardCalled = false;
     void clearBoard();
     void clearVisited();
-    vector<int> visitNeighbors(int row, int col, string substring, vector<int> neighborNodePaths);
+    vector<int> visitNeighbors(unsigned int row, unsigned int col, string substring, vector<int> neighborNodePaths);
 };
 
 #endif // BOGGLEPLAYER_H

@@ -5,13 +5,15 @@ using std::vector;
 using std::set;
 using std::string;
 
+/*
 void BogglePlayer::buildLexicon(const set<string>& word_list)
 {
-  //set<string> wordlist = word_list;
-  //Trie trie = new Trie();
-  //trie.build(wordlist);
+  set<string> wordlist = word_list;
+  Trie trie = new Trie();
+  trie.build(wordlist);
 }
- 
+*/
+
 void BogglePlayer::setBoard(unsigned int rows, unsigned int cols, string** diceArray)
 {
   clearBoard();
@@ -39,20 +41,23 @@ void BogglePlayer::clearBoard()
 
 void BogglePlayer::clearVisited()
 {
-  for(int i=0; i < rows; i++) {
+  for(int unsigned i=0; i < rows; i++) {
     delete[] visited[i];
   }
   delete[] visited;
 }
- 
+
+/*
 bool getAllValidWords(unsigned int minimum_word_length, set<string>* words)
 {
 }
+*/
 
+/*
 bool isInLexicon(const string& word_to_check)
 {
 }
-
+*/
 
 vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
 {
@@ -62,16 +67,16 @@ vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
     return wordPath;
   }
   visited = new bool*[rows];
-  for(int r = 0; r < rows; r++) {
+  for(unsigned int r = 0; r < rows; r++) {
     visited[r] = new bool[cols];
   } 
-  for(int a = 0; a < rows; a++){
-    for(int b = 0; b < cols; b++) {
+  for(unsigned int a = 0; a < rows; a++){
+    for(unsigned int b = 0; b < cols; b++) {
       visited[a][b] = false;
     }
   }
-  for(int i = 0; i < rows; i++) {
-    for(int j = 0; j < cols; j++) {
+  for(unsigned int i = 0; i < rows; i++) {
+    for(unsigned int j = 0; j < cols; j++) {
       if(boggleboard[i][j] == word_to_check.substr(0,boggleboard[i][j].length()) && visited[i][j] == false) {
         wordPath = visitNeighbors(i,j, word_to_check.substr(boggleboard[i][j].length()), wordPath);   
       }
@@ -81,7 +86,7 @@ vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
   
 }
  
-vector<int> BogglePlayer::visitNeighbors(int row, int col, string substring, vector<int> neighborNodePaths)
+vector<int> BogglePlayer::visitNeighbors(unsigned int row, unsigned int col, string substring, vector<int> neighborNodePaths)
 {
   neighborNodePaths.push_back(row*rows + col);
   visited[row][col] = true;
@@ -132,7 +137,9 @@ vector<int> BogglePlayer::visitNeighbors(int row, int col, string substring, vec
   return emptyVector;
 }
 
+/*
 void getCustomBoard(string** &new_board, unsigned int *rows, unsigned int *cols)
 {
 }
+*/
 
