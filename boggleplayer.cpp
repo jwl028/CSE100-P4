@@ -1,6 +1,8 @@
 #include "boggleplayer.h"
 #include "boggleutil.h"
 #include <iostream>
+#include <cctype>
+#include <algorithm>
 
 using std::vector;
 using std::set;
@@ -26,7 +28,9 @@ void BogglePlayer::setBoard(unsigned int rows, unsigned int cols, string** diceA
   }
   for(unsigned int i = 0; i < rows; i++) {
     for(unsigned int j = 0; j < cols; j++) {
-      boggleboard[i][j] = diceArray[i][j];
+      string lowercase = diceArray[i][j];
+      std::transform(lowercase.begin(),lowercase.end(),lowercase.begin(),::tolower);
+      boggleboard[i][j] = lowercase;
       std::cout << boggleboard[i][j] << " ";
     }
      std::cout << std::endl;
@@ -65,6 +69,8 @@ bool BogglePlayer::isInLexicon(const string& word_to_check)
 vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
 {
   //clearVisited();
+  string word = word_to_check; 
+  std::transform(word.begin(),word.end(),word.begin(),::tolower);
   vector<int> wordPath;
   if(setBoardCalled == false) {
     return wordPath;
@@ -80,9 +86,9 @@ vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
   }
   for(unsigned int i = 0; i < rows; i++) {
     for(unsigned int j = 0; j < cols; j++) {
-      if(boggleboard[i][j] == word_to_check.substr(0,boggleboard[i][j].length()) && visited[i][j] == false) {
+      if(boggleboard[i][j] == word.substr(0,boggleboard[i][j].length()) && visited[i][j] == false) {
         std::cout<<"running" <<std::endl;
-        wordPath = visitNeighbors(i,j, word_to_check.substr(boggleboard[i][j].length()), wordPath);
+        wordPath = visitNeighbors(i,j, word.substr(boggleboard[i][j].length()), wordPath);
         if(!wordPath.empty()){
           return wordPath;
         }   
