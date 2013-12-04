@@ -140,16 +140,18 @@ vector<int> BogglePlayer::visitNeighbors(unsigned int row, unsigned int col, str
 
 void BogglePlayer::getCustomBoard(string** &new_board, unsigned int *rows, unsigned int *cols)
 {
-  string custom[4][4] = { {"t","e","s","t"}, 
-                          {"a","b","c","d"},
-                          {"a","b","c","d"},
-                          {"a","b","c","d"}, };
-  new_board = custom;
+  string custom1[] =  {"t","e","s","t"}; 
+  string custom2[] =  {"a","b","c","d"};
+  string custom3[] =  {"a","b","c","d"};
+  string custom4[] =  {"a","b","c","d"};
+  new_board = new string*[4];
+  for(unsigned int r=0; r < 4; r++){
+    new_board[r] = new string[4];
+  }
+  for(int j =0; j <4; j++){
+    new_board[0][j] = custom1[j]; 
+    new_board[1][j] = custom2[j];
+    new_board[2][j] = custom3[j];
+    new_board[3][j] = custom4[j];
+  }
 }
-
-void main() 
-{
-cout << "Hello" << endl;
-}
-
-
