@@ -7,11 +7,11 @@ using std::string;
 
 void BogglePlayer::buildLexicon(const set<string>& word_list)
 {
-  set<string> wordlist = word_list;
-  Trie trie = new Trie();
-  trie.build(wordlist);
+  //set<string> wordlist = word_list;
+  //Trie trie = new Trie();
+  //trie.build(wordlist);
 }
-   
+ 
 void BogglePlayer::setBoard(unsigned int rows, unsigned int cols, string** diceArray)
 {
   clearBoard();
@@ -54,12 +54,12 @@ bool isInLexicon(const string& word_to_check)
 }
 
 
-vector<int> isOnBoard(const string& word_to_check)
+vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
 {
   clearVisited();
   vector<int> wordPath;
   if(setBoardCalled == false) {
-    return 0;
+    return wordPath;
   }
   visited = new bool*[rows];
   for(int r = 0; r < rows; r++) {
@@ -81,7 +81,7 @@ vector<int> isOnBoard(const string& word_to_check)
   
 }
  
-vector<int> visitNeighbors(int row, int col, string substring, vector<int> neighborNodePaths)
+vector<int> BogglePlayer::visitNeighbors(int row, int col, string substring, vector<int> neighborNodePaths)
 {
   neighborNodePaths.push_back(row*rows + col);
   visited[row][col] = true;
@@ -98,7 +98,7 @@ vector<int> visitNeighbors(int row, int col, string substring, vector<int> neigh
       return visitNeighbors(row-1, col-1, substring.substr(boggleboard[row-1][col-1].length()),neighborNodePaths);
     }
   }
-  if(row-1 >= && col+1 <=cols) {
+  if(row-1 >= 0 && col+1 <=cols) {
     if(boggleboard[row-1][col+1] == substring.substr(0,boggleboard[row-1][col+1].length()) && visited[row-1][col+1] == false) {
       return visitNeighbors(row-1, col+1, substring.substr(boggleboard[row-1][col+1].length()),neighborNodePaths);
     }
@@ -128,14 +128,11 @@ vector<int> visitNeighbors(int row, int col, string substring, vector<int> neigh
       return visitNeighbors(row+1, col+1, substring.substr(boggleboard[row+1][col+1].length()),neighborNodePaths);
     }
   }
-  return 0;
+  vector<int> emptyVector;
+  return emptyVector;
 }
 
 void getCustomBoard(string** &new_board, unsigned int *rows, unsigned int *cols)
-{
-}
-
-~BogglePlayer()
 {
 }
 

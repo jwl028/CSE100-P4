@@ -1,16 +1,6 @@
 #ifndef BOGGLEUTIL_H
 #define BOGGLEUTIL_H
-
-class Trie 
-{
-  private:
-    TrieNode* root;
-
-  public:
-    Trie() : root(0) { };
-    void build (const set<string>& word_list);
-};
-
+/*
 class TrieNode
 {
   public:
@@ -26,4 +16,19 @@ class TrieNode
              TrieNode* right = 0, 
              TrieNode* middle = 0) 
       : digit(digit), end(end), left(left), right(right), middle(middle) { }
+    ~TrieNode();
 };
+
+class Trie 
+{
+  private:
+    TrieNode* root;
+
+  public:
+    Trie() : root(0) { };
+    void build (const set<string>& word_list);
+    ~Trie();
+};
+
+*/
+#endif

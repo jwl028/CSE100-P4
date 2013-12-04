@@ -4,6 +4,7 @@
 #include <set>
 #include <vector>
 #include <string>
+#include "baseboggleplayer.h"
 #include "boggleutil.h"
 
 using std::vector;
@@ -28,7 +29,7 @@ class BogglePlayer : public BaseBogglePlayer {
     bool setBoardCalled = false;
     void clearBoard();
     void clearVisited();
-    vector<int> visitNeighbors(int row, int col, string substring, vector<int> neighborNodePaths)
+    vector<int> visitNeighbors(int row, int col, string substring, vector<int> neighborNodePaths);
 };
 
 #endif // BOGGLEPLAYER_H
