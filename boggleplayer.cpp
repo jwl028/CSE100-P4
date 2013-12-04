@@ -1,5 +1,6 @@
 #include "boggleplayer.h"
 #include "boggleutil.h"
+#include <iostream>
 
 using std::vector;
 using std::set;
@@ -16,7 +17,7 @@ void BogglePlayer::buildLexicon(const set<string>& word_list)
 
 void BogglePlayer::setBoard(unsigned int rows, unsigned int cols, string** diceArray)
 {
-  clearBoard();
+  //clearBoard();
   this->rows = rows;
   this->cols = cols;
   boggleboard = new string*[rows];
@@ -26,7 +27,9 @@ void BogglePlayer::setBoard(unsigned int rows, unsigned int cols, string** diceA
   for(unsigned int i = 0; i < rows; i++) {
     for(unsigned int j = 0; j < cols; j++) {
       boggleboard[i][j] = diceArray[i][j];
+      std::cout << boggleboard[i][j] << " ";
     }
+     std::cout << std::endl;
   }
   setBoardCalled = true;
 }
@@ -61,7 +64,7 @@ bool BogglePlayer::isInLexicon(const string& word_to_check)
 
 vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
 {
-  clearVisited();
+  //clearVisited();
   vector<int> wordPath;
   if(setBoardCalled == false) {
     return wordPath;
@@ -78,7 +81,11 @@ vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
   for(unsigned int i = 0; i < rows; i++) {
     for(unsigned int j = 0; j < cols; j++) {
       if(boggleboard[i][j] == word_to_check.substr(0,boggleboard[i][j].length()) && visited[i][j] == false) {
-        wordPath = visitNeighbors(i,j, word_to_check.substr(boggleboard[i][j].length()), wordPath);   
+        std::cout<<"running" <<std::endl;
+        wordPath = visitNeighbors(i,j, word_to_check.substr(boggleboard[i][j].length()), wordPath);
+        if(!wordPath.empty()){
+          return wordPath;
+        }   
       }
     }
   }
@@ -88,13 +95,21 @@ vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
  
 vector<int> BogglePlayer::visitNeighbors(unsigned int row, unsigned int col, string substring, vector<int> neighborNodePaths)
 {
+  std::cout<<"row:" <<row << "col" << col<< std::endl;
+  vector<int> word_path;
+  std::cout<<"here"<< std::endl;
   neighborNodePaths.push_back(row*rows + col);
+  std::cout<<neighborNodePaths.back()<< std::endl;
+  std::cout<<"string: " << substring<< std::endl;
   visited[row][col] = true;
+ // std::cout<<boggleboard[row+1][col] << std::endl;
   if(substring.empty()) {
+  std::cout<<"empty"<< std::endl;
     return neighborNodePaths;    
   }
   if(row >= 1) {
     if(boggleboard[row-1][col] == substring.substr(0,boggleboard[row-1][col].length()) && visited[row-1][col] == false) {
+      std::cout<<"up"<<std::endl;
       return visitNeighbors(row-1, col, substring.substr(boggleboard[row-1][col].length()),neighborNodePaths);
     }
   }
@@ -103,7 +118,7 @@ vector<int> BogglePlayer::visitNeighbors(unsigned int row, unsigned int col, str
       return visitNeighbors(row-1, col-1, substring.substr(boggleboard[row-1][col-1].length()),neighborNodePaths);
     }
   }
-  if(row >= 1 && col+1 <=cols) {
+  if(row >= 1 && col+1 <cols) {
     if(boggleboard[row-1][col+1] == substring.substr(0,boggleboard[row-1][col+1].length()) && visited[row-1][col+1] == false) {
       return visitNeighbors(row-1, col+1, substring.substr(boggleboard[row-1][col+1].length()),neighborNodePaths);
     }
@@ -113,28 +128,33 @@ vector<int> BogglePlayer::visitNeighbors(unsigned int row, unsigned int col, str
       return visitNeighbors(row, col-1, substring.substr(boggleboard[row][col-1].length()),neighborNodePaths);
     }
   }
-  if(col+1 <=cols) {
+  if(col+1 < cols) {
     if(boggleboard[row][col+1] == substring.substr(0,boggleboard[row][col+1].length()) && visited[row][col+1] == false) {
+      std::cout<<"right went through" << std::endl;
       return visitNeighbors(row, col+1, substring.substr(boggleboard[row][col+1].length()),neighborNodePaths);
     }
   }
-  if(row+1 <= rows) {
+  if(row+1 < rows) {
     if(boggleboard[row+1][col] == substring.substr(0,boggleboard[row+1][col].length()) && visited[row+1][col] == false) {
+      std::cout<<"bottom went through" << std::endl;
       return visitNeighbors(row+1, col, substring.substr(boggleboard[row+1][col].length()),neighborNodePaths);
     }
   }
-  if(row+1 <=rows && col >=1) {
+  if(row+1 < rows && col >=1) {
     if(boggleboard[row+1][col-1] == substring.substr(0,boggleboard[row+1][col-1].length()) && visited[row+1][col-1] == false) {
       return visitNeighbors(row+1, col-1, substring.substr(boggleboard[row+1][col-1].length()),neighborNodePaths);
     }
   }
-  if(row+1 <=rows && col+1 <=cols) {
+  if(row+1 <rows && col+1 <cols) {
     if(boggleboard[row+1][col+1] == substring.substr(0,boggleboard[row+1][col+1].length()) && visited[row+1][col+1] == false) {
+      std::cout<<"diag rightwent through" << std::endl;
+      std::cout<<"substring:" << substring << std::endl;
       return visitNeighbors(row+1, col+1, substring.substr(boggleboard[row+1][col+1].length()),neighborNodePaths);
     }
   }
-  vector<int> emptyVector;
-  return emptyVector;
+  //vector<int> emptyVector;
+std::cout<<"end"<<std::endl;
+  return word_path;
 }
 
 
@@ -155,3 +175,4 @@ void BogglePlayer::getCustomBoard(string** &new_board, unsigned int *rows, unsig
     new_board[3][j] = custom4[j];
   }
 }
+
