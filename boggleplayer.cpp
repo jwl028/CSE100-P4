@@ -140,6 +140,16 @@ vector<int> BogglePlayer::visitNeighbors(unsigned int row, unsigned int col, str
 
 void BogglePlayer::getCustomBoard(string** &new_board, unsigned int *rows, unsigned int *cols)
 {
+  string custom[4][4] = { {"t","e","s","t"}, 
+                          {"a","b","c","d"},
+                          {"a","b","c","d"},
+                          {"a","b","c","d"}, };
+  new_board = custom;
+}
+
+void main() 
+{
+cout << "Hello" << endl;
 }
 
 
