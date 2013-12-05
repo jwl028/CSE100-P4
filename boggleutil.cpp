@@ -1,5 +1,5 @@
 #include "boggleutil.h"
-/*
+
 void Trie::build(const set<string>& word_list)
 {
   int wordCount = 0;
@@ -59,4 +59,4 @@ void Trie::build(const set<string>& word_list)
   }
 }
 
-*/
+

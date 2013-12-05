@@ -11,9 +11,9 @@ using std::string;
 
 void BogglePlayer::buildLexicon(const set<string>& word_list)
 {
-  //set<string> wordlist = word_list;
-  //Trie trie = new Trie();
-  //trie.build(wordlist);
+  set<string> wordlist = word_list;
+  Trie trie = new Trie();
+  trie.build(wordlist);
 }
 
 

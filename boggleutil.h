@@ -1,6 +1,6 @@
 #ifndef BOGGLEUTIL_H
 #define BOGGLEUTIL_H
-/*
+
 class TrieNode
 {
   public:
@@ -30,5 +30,5 @@ class Trie
     ~Trie();
 };
 
-*/
+
 #endif
