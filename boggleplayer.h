@@ -31,6 +31,7 @@ class BogglePlayer : public BaseBogglePlayer {
     void clearBoard();
     void clearVisited();
     vector<int> visitNeighbors(unsigned int row, unsigned int col, string substring, vector<int> neighborNodePaths);
+    Trie* trie;
 };
 
 #endif // BOGGLEPLAYER_H

@@ -14,6 +14,9 @@ void Trie::build(const set<string>& word_list)
       //First digit of first word is the root 
       if(j == 0 && wordCount == 1) {
         root = new TrieNode(currWord[j], false);
+        if(currWord.length() == 1) {
+          root->end = true;
+        }
         currNode = root;
       }
       //Determines the placement of the first letter of the following words
@@ -39,11 +42,17 @@ void Trie::build(const set<string>& word_list)
         //Create new node in Trie to the left if digit is smaller
         if(currWord[j] < currNode->digit) {
           currNode->left = new TrieNode(currWord[j], false);
+          if(currWord.length() == 1){
+            currNode->end = true;
+          } 
           currNode = currNode->left;
         }
         //Create new node in Trie to the right if digit is larger 
         else if(currWord[j] > currNode->digit) {
           currNode->right = new TrieNode(currWord[j], false); 
+          if(currWord.length() == 1) {
+            currNode->end = true;
+          }
           currNode = currNode->right;
         }
       }
@@ -60,3 +69,24 @@ void Trie::build(const set<string>& word_list)
 }
 
 
+bool Trie::find(const string& word_to_check)
+{
+  string wordRetrieved = 0;
+  int i = 0;
+  TrieNode* currNode = root;
+  while(currNode != NULL) {
+    if(word_to_check[i] == currNode->digit && currNode->end == false) {
+      wordRetrieved += word_to_check[i]; 
+      currNode = currNode->middle;
+      i++;
+    }
+    else if(word_to_check[i] > currNode->digit && currNode->end ==false) {
+      currNode = currNode->right;
+    }
+    else if(word_to_check[i] < currNode->digit && currNode->end ==false) {
+      currNode = currNode->left;
+    }
+  }    
+  return wordRetrieved == word_to_check;
+  
+}

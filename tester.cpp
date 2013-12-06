@@ -2,7 +2,8 @@
 #include "boggleplayer.cpp"
 #include <string>
 #include <locale>
-
+#include <set>
+#include <vector>
 
 using namespace std;
 
@@ -43,4 +44,8 @@ cout << tester.substr(1);
 //cout << "/n";
 //}
 //}
+
+const set<string>& listwords = "hello";
+player.buildLexicon(listwords);
+
 }

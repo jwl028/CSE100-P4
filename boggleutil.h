@@ -33,8 +33,10 @@ class Trie
     TrieNode* root;
 
   public:
+    //TrieNode* root;
     Trie() : root(0) { };
     void build(const set<string>& word_list);
+    bool find(const string& word_to_check);
     ~Trie();
 };
 
