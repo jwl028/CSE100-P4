@@ -19,7 +19,7 @@ class BogglePlayer : public BaseBogglePlayer {
     bool isInLexicon(const string& word_to_check);
     vector<int> isOnBoard(const string& word_to_check);
     void getCustomBoard(string** &new_board, unsigned int *rows, unsigned int *cols);
-    ~BogglePlayer() {}
+    ~BogglePlayer(); 
 
   private:
     unsigned int rows;
@@ -31,7 +31,7 @@ class BogglePlayer : public BaseBogglePlayer {
     void clearBoard();
     void clearVisited();
     vector<int> visitNeighbors(unsigned int row, unsigned int col, string substring, vector<int> neighborNodePaths);
-    Trie* trie;
+    Trie trie;
 };
 
 #endif // BOGGLEPLAYER_H

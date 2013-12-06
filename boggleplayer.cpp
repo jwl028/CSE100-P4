@@ -12,15 +12,15 @@ using std::string;
 void BogglePlayer::buildLexicon(const set<string>& word_list)
 {
   set<string> wordlist = word_list;
-  Trie* trie = new Trie();
-  trie->build(wordlist);
+  //Trie* trie = new Trie();
+  trie.build(wordlist);
   std::cout << "TRIE BUILT!" << std::endl;
 }
 
 
 void BogglePlayer::setBoard(unsigned int rows, unsigned int cols, string** diceArray)
 {
-  //clearBoard();
+  clearBoard();
   this->rows = rows;
   this->cols = cols;
   boggleboard = new string*[rows];
@@ -64,7 +64,8 @@ bool BogglePlayer::getAllValidWords(unsigned int minimum_word_length, set<string
 
 bool BogglePlayer::isInLexicon(const string& word_to_check)
 {
-  //return trie->find(word_to_check);
+  //std::cout<<"root is " << trie->root->digit << std::endl;
+  return trie.find(word_to_check);
   /*string wordRetrieved = 0;
   int i = 0;
   TrieNode* currNode = root;
@@ -88,7 +89,6 @@ bool BogglePlayer::isInLexicon(const string& word_to_check)
 
 vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
 {
-  //clearVisited();
   word = word_to_check; 
   std::transform(word.begin(),word.end(),word.begin(),::tolower);
   vector<int> wordPath;
@@ -111,11 +111,13 @@ vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
         wordPath = visitNeighbors(i,j, word.substr(boggleboard[i][j].length()), wordPath);
         wordPath.pop_back();
         if(!wordPath.empty()){
+          clearVisited();
           return wordPath;
         }   
       }
     }
   }
+  clearVisited();
   return wordPath;	
   
 }
@@ -211,5 +213,9 @@ void BogglePlayer::getCustomBoard(string** &new_board, unsigned int *rows, unsig
     new_board[2][j] = custom3[j];
     new_board[3][j] = custom4[j];
   }
+}
+
+BogglePlayer::~BogglePlayer()
+{
 }
 
