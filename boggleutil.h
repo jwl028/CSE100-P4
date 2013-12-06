@@ -1,6 +1,14 @@
 #ifndef BOGGLEUTIL_H
 #define BOGGLEUTIL_H
 
+#include <set>
+#include <vector>
+#include <string>
+
+using std::vector;
+using std::set;
+using std::string;
+
 class TrieNode
 {
   public:
@@ -26,7 +34,7 @@ class Trie
 
   public:
     Trie() : root(0) { };
-    void build (const set<string>& word_list);
+    void build(const set<string>& word_list);
     ~Trie();
 };
 

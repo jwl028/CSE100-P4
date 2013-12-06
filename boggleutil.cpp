@@ -10,7 +10,7 @@ void Trie::build(const set<string>& word_list)
     string currWord = *i;
     wordCount++;
     //Loops through each digit in each word
-    for(int j = 0; j < currWord.length(); j++) {
+    for(int unsigned j = 0; j < currWord.length(); j++) {
       //First digit of first word is the root 
       if(j == 0 && wordCount == 1) {
         root = new TrieNode(currWord[j], false);

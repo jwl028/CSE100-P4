@@ -13,7 +13,7 @@ void BogglePlayer::buildLexicon(const set<string>& word_list)
 {
   set<string> wordlist = word_list;
   Trie* trie = new Trie();
-  trie.build(wordlist);
+  trie->build(wordlist);
 }
 
 
@@ -63,13 +63,14 @@ bool BogglePlayer::getAllValidWords(unsigned int minimum_word_length, set<string
 
 bool BogglePlayer::isInLexicon(const string& word_to_check)
 {
+  
 }
 
 
 vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
 {
   //clearVisited();
-  string word = word_to_check; 
+  word = word_to_check; 
   std::transform(word.begin(),word.end(),word.begin(),::tolower);
   vector<int> wordPath;
   if(setBoardCalled == false) {
@@ -101,65 +102,73 @@ vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
  
 vector<int> BogglePlayer::visitNeighbors(unsigned int row, unsigned int col, string substring, vector<int> neighborNodePaths)
 {
+  //bool wordFound = false;
   std::cout<<"row:" <<row << "col" << col<< std::endl;
   vector<int> word_path;
   std::cout<<"here"<< std::endl;
   neighborNodePaths.push_back(row*rows + col);
+  word_path = neighborNodePaths;
   std::cout<<neighborNodePaths.back()<< std::endl;
   std::cout<<"string: " << substring<< std::endl;
   visited[row][col] = true;
  // std::cout<<boggleboard[row+1][col] << std::endl;
   if(substring.empty()) {
+   // wordFound = true;
   std::cout<<"empty"<< std::endl;
     return neighborNodePaths;    
   }
   if(row >= 1) {
-    if(boggleboard[row-1][col] == substring.substr(0,boggleboard[row-1][col].length()) && visited[row-1][col] == false) {
+    if(boggleboard[row-1][col] == substring.substr(0,boggleboard[row-1][col].length()) && visited[row-1][col] == false && word_path.size() != word.length()) {
       std::cout<<"up"<<std::endl;
-      return visitNeighbors(row-1, col, substring.substr(boggleboard[row-1][col].length()),neighborNodePaths);
+      word_path = visitNeighbors(row-1, col, substring.substr(boggleboard[row-1][col].length()),neighborNodePaths);
     }
   }
   if(row >= 1 && col >=1) {
-    if(boggleboard[row-1][col-1] == substring.substr(0,boggleboard[row-1][col-1].length()) && visited[row-1][col-1] == false) {
-      return visitNeighbors(row-1, col-1, substring.substr(boggleboard[row-1][col-1].length()),neighborNodePaths);
+    if(boggleboard[row-1][col-1] == substring.substr(0,boggleboard[row-1][col-1].length()) && visited[row-1][col-1] == false && word_path.size() != word.length()) {
+      word_path = visitNeighbors(row-1, col-1, substring.substr(boggleboard[row-1][col-1].length()),neighborNodePaths);
     }
   }
   if(row >= 1 && col+1 <cols) {
-    if(boggleboard[row-1][col+1] == substring.substr(0,boggleboard[row-1][col+1].length()) && visited[row-1][col+1] == false) {
-      return visitNeighbors(row-1, col+1, substring.substr(boggleboard[row-1][col+1].length()),neighborNodePaths);
+    if(boggleboard[row-1][col+1] == substring.substr(0,boggleboard[row-1][col+1].length()) && visited[row-1][col+1] == false && word_path.size() != word.length()) {
+      word_path = visitNeighbors(row-1, col+1, substring.substr(boggleboard[row-1][col+1].length()),neighborNodePaths);
     }
   }
   if(col >= 1) {
-    if(boggleboard[row][col-1] == substring.substr(0,boggleboard[row][col-1].length()) && visited[row][col-1] == false) {
-      return visitNeighbors(row, col-1, substring.substr(boggleboard[row][col-1].length()),neighborNodePaths);
+    if(boggleboard[row][col-1] == substring.substr(0,boggleboard[row][col-1].length()) && visited[row][col-1] == false && word_path.size() != word.length()) {
+      word_path = visitNeighbors(row, col-1, substring.substr(boggleboard[row][col-1].length()),neighborNodePaths);
     }
   }
   if(col+1 < cols) {
-    if(boggleboard[row][col+1] == substring.substr(0,boggleboard[row][col+1].length()) && visited[row][col+1] == false) {
+    if(boggleboard[row][col+1] == substring.substr(0,boggleboard[row][col+1].length()) && visited[row][col+1] == false && word_path.size() != word.length()) {
       std::cout<<"right went through" << std::endl;
-      return visitNeighbors(row, col+1, substring.substr(boggleboard[row][col+1].length()),neighborNodePaths);
+      word_path = visitNeighbors(row, col+1, substring.substr(boggleboard[row][col+1].length()),neighborNodePaths);
     }
   }
   if(row+1 < rows) {
-    if(boggleboard[row+1][col] == substring.substr(0,boggleboard[row+1][col].length()) && visited[row+1][col] == false) {
+    if(boggleboard[row+1][col] == substring.substr(0,boggleboard[row+1][col].length()) && visited[row+1][col] == false && word_path.size() != word.length()) {
       std::cout<<"bottom went through" << std::endl;
-      return visitNeighbors(row+1, col, substring.substr(boggleboard[row+1][col].length()),neighborNodePaths);
+      word_path = visitNeighbors(row+1, col, substring.substr(boggleboard[row+1][col].length()),neighborNodePaths);
     }
   }
   if(row+1 < rows && col >=1) {
-    if(boggleboard[row+1][col-1] == substring.substr(0,boggleboard[row+1][col-1].length()) && visited[row+1][col-1] == false) {
-      return visitNeighbors(row+1, col-1, substring.substr(boggleboard[row+1][col-1].length()),neighborNodePaths);
+    if(boggleboard[row+1][col-1] == substring.substr(0,boggleboard[row+1][col-1].length()) && visited[row+1][col-1] == false && word_path.size() != word.length()) {
+      word_path = visitNeighbors(row+1, col-1, substring.substr(boggleboard[row+1][col-1].length()),neighborNodePaths);
     }
   }
   if(row+1 <rows && col+1 <cols) {
-    if(boggleboard[row+1][col+1] == substring.substr(0,boggleboard[row+1][col+1].length()) && visited[row+1][col+1] == false) {
+    if(boggleboard[row+1][col+1] == substring.substr(0,boggleboard[row+1][col+1].length()) && visited[row+1][col+1] == false && word_path.size() != word.length()) {
       std::cout<<"diag rightwent through" << std::endl;
       std::cout<<"substring:" << substring << std::endl;
-      return visitNeighbors(row+1, col+1, substring.substr(boggleboard[row+1][col+1].length()),neighborNodePaths);
+      word_path = visitNeighbors(row+1, col+1, substring.substr(boggleboard[row+1][col+1].length()),neighborNodePaths);
     }
   }
   //vector<int> emptyVector;
-std::cout<<"end"<<std::endl;
+std::cout<<"end-row= "<< row << "col= " <<col<<std::endl;
+std::cout <<"word_path_size" << word_path.size() << "wordlength " <<word.length() << std::endl;
+  if(word_path.size() != word.length()) {
+    visited[row][col] = false;
+    word_path.pop_back();
+  }
   return word_path;
 }
 

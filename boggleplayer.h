@@ -24,6 +24,7 @@ class BogglePlayer : public BaseBogglePlayer {
   private:
     unsigned int rows;
     unsigned int cols;
+    string word;
     string **boggleboard;
     bool **visited;
     bool setBoardCalled;
