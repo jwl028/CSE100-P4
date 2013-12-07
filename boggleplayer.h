@@ -28,6 +28,7 @@ class BogglePlayer : public BaseBogglePlayer {
     string **boggleboard;
     bool **visited;
     bool setBoardCalled;
+    bool buildLexiconCalled;
     void clearBoard();
     void clearVisited();
     vector<int> visitNeighbors(unsigned int row, unsigned int col, string substring, vector<int> neighborNodePaths);

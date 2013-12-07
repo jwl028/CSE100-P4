@@ -15,6 +15,7 @@ void BogglePlayer::buildLexicon(const set<string>& word_list)
   //Trie* trie = new Trie();
   trie.build(wordlist);
   std::cout << "TRIE BUILT!" << std::endl;
+  buildLexiconCalled = true;
 }
 
 
@@ -58,14 +59,96 @@ void BogglePlayer::clearVisited()
 
 bool BogglePlayer::getAllValidWords(unsigned int minimum_word_length, set<string>* words)
 {
-  
+  visited = new bool*[rows];
+  for(unsigned int r = 0; r < rows; r++) {
+    visited[r] = new bool[cols];
+  } 
+  for(unsigned int a = 0; a < rows; a++){
+    for(unsigned int b = 0; b < cols; b++) {
+      visited[a][b] = false;
+    }
+  }
+  for(unsigned int i = 0; i < rows; i++) {
+    for(unsigned int j = 0; j < cols; j++) {
+      visit(i, j, boggleboard[i][j], minimum_word_length, words); 
+    }
+  }
+  clearVisited();
+  if(setBoardCalled == true && buildLexiconCalled == true) {
+    return true;
+  }
+  else {
+    return false;
+  }
+
+}
+
+void BogglePlayer::visit(unsigned int row, unsigned int col, string substr, unsigned int min, set<string>* words) 
+{
+  string substring = substr;
+  visited[row][col] = true;
+  if(substring.length() >= min) {
+    if(trie.isInLexicon(substring) == true) {
+      words->insert(substring);
+    }
+  }
+  if(row >= 1) {
+    if(visited[row-1][col] == false) {
+      //std::cout<<"up"<<std::endl;
+      visit(row-1, col, substring+boggleboard[row-1][col],min, words);
+    }
+  }
+  if(row >= 1 && col >=1) {
+    if(visited[row-1][col-1] == false) {
+      visit(row-1, col-1, substring+(boggleboard[row-1][col-1]),min, words);
+    }
+  }
+  if(row >= 1 && col+1 <cols) {
+    if(visited[row-1][col+1] == false) {
+      visit(row-1, col+1, substring+(boggleboard[row-1][col+1]),min, words);
+    }
+  }
+  if(col >= 1) {
+    if(visited[row][col-1] == false) {
+      visit(row, col-1, substring+boggleboard[row][col-1],min,words);
+    }
+  }
+  if(col+1 < cols) {
+    if(visited[row][col+1] == false) {
+      // std::cout<<"right went through" << std::endl;
+      visit(row, col+1, substring+(boggleboard[row][col+1]),min, words);
+    }
+  }
+  if(row+1 < rows) {
+    if(visited[row+1][col] == false) {
+      //std::cout<<"bottom went through" << std::endl;
+      visit(row+1, col, substring+(boggleboard[row+1][col]),min, words);
+    }
+  }
+  if(row+1 < rows && col >=1) {
+    if(visited[row+1][col-1] == false) {
+      visit(row+1, col-1, substring+(boggleboard[row+1][col-1]),min, words);
+    }
+  }
+  if(row+1 <rows && col+1 <cols) {
+    if(visited[row+1][col+1] == false) {
+      //std::cout<<"diag rightwent through" << std::endl;
+      //std::cout<<"substring:" << substring << std::endl;
+      visit(row+1, col+1, substring+(boggleboard[row+1][col+1]),neighborNodePaths);
+    }
+  }
+
 
 }
 
 
 
+
 bool BogglePlayer::isInLexicon(const string& word_to_check)
 {
+  if(buildLexiconCalled == false) {
+    return false;
+  }
   //std::cout<<"root is " << trie->root->digit << std::endl;
   return trie.find(word_to_check);
   /*string wordRetrieved = 0;
