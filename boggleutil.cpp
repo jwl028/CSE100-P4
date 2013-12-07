@@ -24,7 +24,7 @@ void Trie::build(const set<string>& word_list)
           root->end = true;
         }
         currNode = root;
-        cout << "Root :" << currNode->digit << endl;
+        //cout << "Root :" << currNode->digit << endl;
       }
       //Determines the placement of the first letter of the following words
       else if(j == 0 && wordCount != 1) {
@@ -64,7 +64,7 @@ void Trie::build(const set<string>& word_list)
             currNode->end = true;
           }
           currNode = currNode->right;
-          cout << "RightNode" << currNode->digit << endl;
+          //cout << "RightNode" << currNode->digit << endl;
         }
       }
       //Create nodes down the middle for the remaining digits
@@ -160,27 +160,27 @@ bool Trie::find(const string& word_to_check)
   string wordRetrieved = "";
   int i = 0;
   TrieNode* currNode = root;
-  cout << "root is" << currNode->digit << endl;
-  cout << "currNodeEnd = " << currNode->end <<endl;
-  cout << word_to_check[0] << endl;
+ // cout << "root is" << currNode->digit << endl;
+ // cout << "currNodeEnd = " << currNode->end <<endl;
+ // cout << word_to_check[0] << endl;
   while(currNode != 0 && i < word_to_check.length()) {
-  cout << "digit :" << currNode->digit << endl;
+ // cout << "digit :" << currNode->digit << endl;
     if(wordRetrieved == word_to_check && currNode->end == true) {
       return true;
     }
     if(word_to_check[i] == currNode->digit) {
       wordRetrieved += word_to_check[i]; 
-      cout << "word = " << wordRetrieved << endl;
+      //cout << "word = " << wordRetrieved << endl;
       currNode = currNode->middle;
       i++;
     }
     else if(word_to_check[i] > currNode->digit) {
-      cout << "rightshift word " << endl;
+      //cout << "rightshift word " << endl;
       currNode = currNode->right;
     }
     else if(word_to_check[i] < currNode->digit) {
       currNode = currNode->left;
-      cout << "leftshift word" << endl;
+      //cout << "leftshift word" << endl;
     }
   }    
   return wordRetrieved == word_to_check;
