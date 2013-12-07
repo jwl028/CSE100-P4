@@ -1,19 +1,32 @@
+//------------------------------------------------
+// Filename: boggleutil.cpp
+// Author: Jimmy Li
+// Date: 12/6/2013
+// Rev-Date: 12/6/2013
+//
+// Description: Methods characteristic to Trie data structures 
+//
+//-------------------------------------------------
 #include "boggleutil.h"
 #include <iostream>
 
 using namespace std;
 
+//------------------------------------------------------------------
+// build(const set<string>& word_list): Constructs a Trie tree 
+//
+// Input: const set<string>& word_list 
+// Output: <none>
+//-------------------------------------------------------------------
 
 void Trie::build(const set<string>& word_list)
 {
-  cout << "Building" << endl;
   int wordCount = 0;
   TrieNode* currNode;
   TrieNode* prevNode = 0;
   //Loops through each word in the lexicon
   for(set<string>::iterator i = word_list.begin(); i != word_list.end(); i++) {
     string currWord = *i;
-    //cout << "current word = " << currWord << endl;
     wordCount++;
     //Loops through each digit in each word
     for(int unsigned j = 0; j < currWord.length(); j++) {
@@ -24,7 +37,6 @@ void Trie::build(const set<string>& word_list)
           root->end = true;
         }
         currNode = root;
-        //cout << "Root :" << currNode->digit << endl;
       }
       //Determines the placement of the first letter of the following words
       else if(j == 0 && wordCount != 1) {
@@ -47,7 +59,6 @@ void Trie::build(const set<string>& word_list)
         }
         //Sets the current node back to the previous node for modification
         currNode = prevNode;
-        //cout << "currWord: " << currWord[j] << " currDigit: " <<currNode->digit <<endl;
         //Create new node in Trie to the left if digit is smaller
         if(currWord[j] < currNode->digit) {
           currNode->left = new TrieNode(currWord[j], false);
@@ -55,7 +66,6 @@ void Trie::build(const set<string>& word_list)
             currNode->end = true;
           } 
           currNode = currNode->left;
-          //cout << "LeftNode " << currNode->digit << endl;
         }
         //Create new node in Trie to the right if digit is larger 
         else if(currWord[j] > currNode->digit) {
@@ -64,19 +74,13 @@ void Trie::build(const set<string>& word_list)
             currNode->end = true;
           }
           currNode = currNode->right;
-          //cout << "RightNode" << currNode->digit << endl;
         }
       }
       //Create nodes down the middle for the remaining digits
       else if(j>0) {
-        //cout << "word: " << currWord[j] << endl;
-        //cout << "j " << j << endl; 
-        //cout <<currNode->digit << endl;
         if(currNode->middle == 0) {
           currNode->middle = new TrieNode(currWord[j],false);
           currNode = currNode->middle;
-                  
-          //cout << "Made middle: " << currNode->digit << endl;
         }
         else {
           currNode = currNode->middle;
@@ -86,78 +90,32 @@ void Trie::build(const set<string>& word_list)
                 currNode->left = new TrieNode(currWord[j],false);
               }
               currNode = currNode->left;
-          //cout << "Made left: " << currNode->digit << endl;
             }
             else if(currWord[j] > currNode->digit) {
               if(currNode->right == 0) {
                 currNode->right = new TrieNode(currWord[j],false);
               }
               currNode = currNode->right;
-          //cout << "Made right: " << currNode->digit << endl;
             }
           }
         }
       }
-/*
-        if(j == 1) {
-          prevNode = currNode;
-          currNode = currNode->middle;
-        }
-        while(currNode != 0) {
-          prevNode = currNode;
-          if(currNode->digit == currWord[j]) {
-            currNode = currNode->middle;
-          }
-          else if(currWord[j] < currNode->digit) {
-            currNode = currNode->left;
-          }
-          else {
-            currNode = currNode->right;
-          }
-        }
-        currNode = prevNode;
-        if(currWord[j] < currNode->digit) {
-          currNode->left = new TrieNode(currWord[j], false);
-        }
-        else if(currWord[j] > currNode->digit) {
-          currNode->right = new TrieNode(currWord[j], false);
-        }
-        else {
-          currNode->middle = new TrieNode(currWord[j], false);
-        cout << "currentNode = " << currNode->digit << endl;
-        }
-       // cout << "currentNode = " << currNode->digit << endl;
-        if((j+1) == currWord.length()) {
-          currNode->end = true;
-        }
-      //  else {
-       //   currNode->middle = new TrieNode(currWord[j], false);
-
-        
-      //  }
-*/
-
-/*
-        if(currNode->middle == 0) {
-          currNode->middle = new TrieNode(currWord[j], false);
-          currNode = currNode->middle;
-          //cout << "MiddleNode: " << currNode->digit << endl;
-          if((j+1) == currWord.length()) {
-            currNode->end = true;
-            cout <<"END BIT" << endl;
-          }
-        }
-        else if(currNode->middle->digit == currWord[j]) {
-*/          
-      
     }
   }
 }
+
+//------------------------------------------------------------------
+// isPrefix(const string& word_to_check): Checks if prefix is valid in lexicon 
+//
+// Input: const string& word_to_check 
+// Output: bool
+//-------------------------------------------------------------------
 
 bool Trie::isPrefix(const string& word_to_check)
 {
   int i = 0;
   TrieNode* currNode = root;
+  //Traverse from root of Trie all the way down until past the last node
   while(currNode != 0 && i < word_to_check.length()){
     if(currNode->digit == word_to_check[i]) {
       currNode = currNode->middle;
@@ -170,6 +128,7 @@ bool Trie::isPrefix(const string& word_to_check)
       currNode = currNode->right;
     }
   }
+  //If the prefix can be formed from the Trie then return true
   if(i == word_to_check.length()) {
     return true;
   }
@@ -178,35 +137,39 @@ bool Trie::isPrefix(const string& word_to_check)
   }
 }
 
+//------------------------------------------------------------------
+// find(const string& word_to_check): Checks if word is valid in lexicon 
+//
+// Input: const string& word_to_check
+// Output: bool
+//-------------------------------------------------------------------
 
 bool Trie::find(const string& word_to_check)
 {
   string wordRetrieved = "";
   int i = 0;
   TrieNode* currNode = root;
- // cout << "root is" << currNode->digit << endl;
- // cout << "currNodeEnd = " << currNode->end <<endl;
- // cout << word_to_check[0] << endl;
+  //Traverse from root down the Trie
   while(currNode != 0 && i < word_to_check.length()) {
- // cout << "digit :" << currNode->digit << endl;
+    //Returns true if word can be constructed
     if(wordRetrieved == word_to_check && currNode->end == true) {
       return true;
     }
+    //Construct word based on Trie
     if(word_to_check[i] == currNode->digit) {
       wordRetrieved += word_to_check[i]; 
-      //cout << "word = " << wordRetrieved << endl;
       currNode = currNode->middle;
       i++;
     }
     else if(word_to_check[i] > currNode->digit) {
-      //cout << "rightshift word " << endl;
       currNode = currNode->right;
     }
     else if(word_to_check[i] < currNode->digit) {
       currNode = currNode->left;
-      //cout << "leftshift word" << endl;
     }
   }    
+  //If the word can be fully constructed then it should equate to the passed
+  //in string
   return wordRetrieved == word_to_check;
 }
 

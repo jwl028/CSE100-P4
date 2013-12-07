@@ -1,3 +1,13 @@
+//------------------------------------------------
+// Filename: boggleutil.cpp
+// Author: Jimmy Li
+// Date: 12/6/2013 
+// Rev-Date: 12/6/2013 
+//
+// Description: Classes for the Trie data structure 
+//
+//-------------------------------------------------
+
 #ifndef BOGGLEUTIL_H
 #define BOGGLEUTIL_H
 
@@ -33,7 +43,6 @@ class Trie
     TrieNode* root;
 
   public:
-    //TrieNode* root;
     Trie() : root(0) { };
     void build(const set<string>& word_list);
     bool isPrefix(const string& word_to_check);

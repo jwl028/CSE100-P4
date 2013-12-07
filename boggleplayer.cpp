@@ -1,3 +1,13 @@
+//------------------------------------------------
+// Filename: boggleplayer.cpp
+// Author: Jimmy Li
+// Date: 12/6/2013
+// Rev-Date: 12/6/2013
+//
+// Description: Boggleplayer methods 
+//
+//-------------------------------------------------
+
 #include "boggleplayer.h"
 #include "boggleutil.h"
 #include <iostream>
@@ -8,16 +18,28 @@ using std::vector;
 using std::set;
 using std::string;
 
+//------------------------------------------------------------------
+// buildLexicon(const set<string>& word_list): Constructs the Lexicon 
+//                                             using a Trie data structure 
+//
+// Input: const set<string>& word_list 
+// Output: <none>
+//-------------------------------------------------------------------
 
 void BogglePlayer::buildLexicon(const set<string>& word_list)
 {
   set<string> wordlist = word_list;
-  //Trie* trie = new Trie();
   trie.build(wordlist);
-  //std::cout << "TRIE BUILT!" << std::endl;
   buildLexiconCalled = true;
 }
 
+//------------------------------------------------------------------
+// setBoard(unsigned int rows, unsigned int cols, string** diceArray):
+// Constructs the boggleboard. 
+//
+// Input: unsigned int rows, unsigned int cols, string** diceArray 
+// Output: <none>
+//-------------------------------------------------------------------
 
 void BogglePlayer::setBoard(unsigned int rows, unsigned int cols, string** diceArray)
 {
@@ -33,12 +55,17 @@ void BogglePlayer::setBoard(unsigned int rows, unsigned int cols, string** diceA
       string lowercase = diceArray[i][j];
       std::transform(lowercase.begin(),lowercase.end(),lowercase.begin(),::tolower);
       boggleboard[i][j] = lowercase;
-      //std::cout << boggleboard[i][j] << " ";
     }
-     //std::cout << std::endl;
   }
   setBoardCalled = true;
 }
+
+//------------------------------------------------------------------
+// clearBoard(): Deletes the boggleboard
+//
+// Input: <none> 
+// Output: <none>
+//-------------------------------------------------------------------
 
 void BogglePlayer::clearBoard()
 {
@@ -48,6 +75,13 @@ void BogglePlayer::clearBoard()
   delete[] boggleboard;
 }
 
+//------------------------------------------------------------------
+// clearVisited(): Deletes the boolean tracking node visits 
+//
+// Input: <none> 
+// Output: <none>
+//-------------------------------------------------------------------
+
 void BogglePlayer::clearVisited()
 {
   for(int unsigned i=0; i < rows; i++) {
@@ -56,6 +90,13 @@ void BogglePlayer::clearVisited()
   delete[] visited;
 }
 
+//------------------------------------------------------------------
+// getAllValidWords(unsigned int minimum_word_length, set<string>* words): 
+// Compiles all the words that can be made on the board that are also valid
+// in the lexicon
+// Input: unsigned int minimum_word_length, set<string>* words
+// Output: bool
+//-------------------------------------------------------------------
 
 bool BogglePlayer::getAllValidWords(unsigned int minimum_word_length, set<string>* words)
 {
@@ -83,11 +124,17 @@ bool BogglePlayer::getAllValidWords(unsigned int minimum_word_length, set<string
 
 }
 
+//------------------------------------------------------------------
+// visit(unsigned int row, unsigned int col, string substr, unsigned int minimum         _word_length, set<string>* words): 
+// Compiles all the words that can be made on the board that are also valid
+// in the lexicon (Helper method)
+// Input: unsigned int row, unsigned int col, string substr, unsigned int minimu          m_word_length, set<string>* words
+// Output: bool
+//-------------------------------------------------------------------
+
 void BogglePlayer::visit(unsigned int row, unsigned int col, string substr, unsigned int min, set<string>* words) 
 {
   string substring = substr;
-  //std::cout << "min: " << min << std::endl;
-  //std::cout << "substring: " << substring << std::endl;
   visited[row][col] = true;
   if(trie.isPrefix(substring) == false) {
     visited[row][col] = false;
@@ -100,7 +147,6 @@ void BogglePlayer::visit(unsigned int row, unsigned int col, string substr, unsi
   }
   if(row >= 1) {
     if(visited[row-1][col] == false) {
-      //std::cout<<"up"<<std::endl;
       visit(row-1, col, substring+boggleboard[row-1][col],min, words);
     }
   }
@@ -121,13 +167,11 @@ void BogglePlayer::visit(unsigned int row, unsigned int col, string substr, unsi
   }
   if(col+1 < cols) {
     if(visited[row][col+1] == false) {
-      // std::cout<<"right went through" << std::endl;
       visit(row, col+1, substring+(boggleboard[row][col+1]),min, words);
     }
   }
   if(row+1 < rows) {
     if(visited[row+1][col] == false) {
-      //std::cout<<"bottom went through" << std::endl;
       visit(row+1, col, substring+(boggleboard[row+1][col]),min, words);
     }
   }
@@ -138,8 +182,6 @@ void BogglePlayer::visit(unsigned int row, unsigned int col, string substr, unsi
   }
   if(row+1 <rows && col+1 <cols) {
     if(visited[row+1][col+1] == false) {
-      //std::cout<<"diag rightwent through" << std::endl;
-      //std::cout<<"substring:" << substring << std::endl;
       visit(row+1, col+1, substring+(boggleboard[row+1][col+1]),min, words);
     }
   }
@@ -149,34 +191,26 @@ void BogglePlayer::visit(unsigned int row, unsigned int col, string substr, unsi
 
 
 
-
+//------------------------------------------------------------------
+//isInLexicon(const string* word_to_check): Checks if word is in Lexicon 
+//
+// Input: const string& word_to_check 
+// Output: bool
+//-------------------------------------------------------------------
 bool BogglePlayer::isInLexicon(const string& word_to_check)
 {
   if(buildLexiconCalled == false) {
     return false;
   }
-  //std::cout<<"root is " << trie->root->digit << std::endl;
   return trie.find(word_to_check);
-  /*string wordRetrieved = 0;
-  int i = 0;
-  TrieNode* currNode = root;
-  while(currNode != NULL) {
-    if(word_to_check[i] == currNode->digit && currNode->end == false) {
-      wordRetrieved += word_to_check[i]; 
-      currNode = currNode->middle;
-      i++;
-    }
-    else if(word_to_check[i] > currNode->digit && currNode->end ==false) {
-      currNode = currNode->right;
-    }
-    else if(word_to_check[i] < currNode->digit && currNode->end ==false) {
-      currNode = currNode->left;
-    }
-  }    
-  return wordRetrieved == word_to_check;
-  */
 }
 
+//------------------------------------------------------------------
+//isOnBoard(const string& word_to_check): Checks if word is on the board 
+//
+// Input: const string& word_to_check 
+// Output: vector<int> 
+//-------------------------------------------------------------------
 
 vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
 {
@@ -198,7 +232,6 @@ vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
   for(unsigned int i = 0; i < rows; i++) {
     for(unsigned int j = 0; j < cols; j++) {
       if(boggleboard[i][j] == word.substr(0,boggleboard[i][j].length()) && visited[i][j] == false) {
-        //std::cout<<"running" <<std::endl;
         wordPath = visitNeighbors(i,j, word.substr(boggleboard[i][j].length()), wordPath);
         wordPath.pop_back();
         if(!wordPath.empty()){
@@ -210,30 +243,29 @@ vector<int> BogglePlayer::isOnBoard(const string& word_to_check)
   }
   clearVisited();
   return wordPath;	
-  
 }
  
+//------------------------------------------------------------------
+// visitNeighbors(unsigned int row, unsigned int col, string substring, 
+//                vector<int> neighborNodePaths): Helper method that checks the //                                                neighbors for a valid path 
+//
+// Input: unsigned int row, unsigned int col, string substring, vector<int> 
+//        neighborNodePaths
+// Output: vector<int> 
+//-------------------------------------------------------------------
+
 vector<int> BogglePlayer::visitNeighbors(unsigned int row, unsigned int col, string substring, vector<int> neighborNodePaths)
 {
-  //bool wordFound = false;
-  //std::cout<<"row:" <<row << "col" << col<< std::endl;
   vector<int> word_path;
-  //std::cout<<"here"<< std::endl;
   neighborNodePaths.push_back(row*rows + col);
   word_path = neighborNodePaths;
-  //std::cout<<neighborNodePaths.back()<< std::endl;
-  //std::cout<<"string: " << substring<< std::endl;
   visited[row][col] = true;
- // std::cout<<boggleboard[row+1][col] << std::endl;
   if(substring.empty()) {
-   // wordFound = true;
    neighborNodePaths.push_back(-1);
-   //std::cout<<"empty"<< std::endl;
     return neighborNodePaths;    
   }
   if(row >= 1) {
     if(boggleboard[row-1][col] == substring.substr(0,boggleboard[row-1][col].length()) && visited[row-1][col] == false && word_path.back() != -1) {
-      //std::cout<<"up"<<std::endl;
       word_path = visitNeighbors(row-1, col, substring.substr(boggleboard[row-1][col].length()),neighborNodePaths);
     }
   }
@@ -254,13 +286,11 @@ vector<int> BogglePlayer::visitNeighbors(unsigned int row, unsigned int col, str
   }
   if(col+1 < cols) {
     if(boggleboard[row][col+1] == substring.substr(0,boggleboard[row][col+1].length()) && visited[row][col+1] == false && word_path.back() != -1) {
-      //std::cout<<"right went through" << std::endl;
       word_path = visitNeighbors(row, col+1, substring.substr(boggleboard[row][col+1].length()),neighborNodePaths);
     }
   }
   if(row+1 < rows) {
     if(boggleboard[row+1][col] == substring.substr(0,boggleboard[row+1][col].length()) && visited[row+1][col] == false && word_path.back() != -1) {
-      //std::cout<<"bottom went through" << std::endl;
       word_path = visitNeighbors(row+1, col, substring.substr(boggleboard[row+1][col].length()),neighborNodePaths);
     }
   }
@@ -271,22 +301,22 @@ vector<int> BogglePlayer::visitNeighbors(unsigned int row, unsigned int col, str
   }
   if(row+1 <rows && col+1 <cols) {
     if(boggleboard[row+1][col+1] == substring.substr(0,boggleboard[row+1][col+1].length()) && visited[row+1][col+1] == false && word_path.back() != -1) {
-      //std::cout<<"diag rightwent through" << std::endl;
-      //std::cout<<"substring:" << substring << std::endl;
       word_path = visitNeighbors(row+1, col+1, substring.substr(boggleboard[row+1][col+1].length()),neighborNodePaths);
     }
   }
-  //vector<int> emptyVector;
-//std::cout<<"end-row= "<< row << "col= " <<col<<std::endl;
-//std::cout <<"word_path_size" << word_path.size() << "wordlength " <<word.length() << std::endl;
   if(word_path.back() != -1) {
     visited[row][col] = false;
     word_path.pop_back();
   }
-  //std::cout << "wordback: " << word_path.back() << std::endl;
   return word_path;
 }
 
+//------------------------------------------------------------------
+// getCustomBoard(string** &new_board, unsigned int *rows, unsigned int *cols): //                Creates a custom board 
+//
+// Input: string** &new_board, unsigned int *rows, unsigned int *cols
+// Output: <none>
+//-------------------------------------------------------------------
 
 void BogglePlayer::getCustomBoard(string** &new_board, unsigned int *rows, unsigned int *cols)
 {

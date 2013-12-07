@@ -1,3 +1,13 @@
+//------------------------------------------------
+// Filename: boggleplayer.h
+// Author: Jimmy Li
+// Date: 12/6/2013
+// Rev-Date: 12/6/2013
+//
+// Description: Boggleplayer class 
+//
+//-------------------------------------------------
+
 #ifndef BOGGLEPLAYER_H
 #define BOGGLEPLAYER_H
 
