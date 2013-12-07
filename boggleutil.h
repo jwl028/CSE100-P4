@@ -36,6 +36,7 @@ class Trie
     //TrieNode* root;
     Trie() : root(0) { };
     void build(const set<string>& word_list);
+    bool isPrefix(const string& word_to_check);
     bool find(const string& word_to_check);
     ~Trie();
 };

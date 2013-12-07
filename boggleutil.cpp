@@ -154,6 +154,30 @@ void Trie::build(const set<string>& word_list)
   }
 }
 
+bool Trie::isPrefix(const string& word_to_check)
+{
+  int i = 0;
+  TrieNode* currNode = root;
+  while(currNode != 0 && i < word_to_check.length()){
+    if(currNode->digit == word_to_check[i]) {
+      currNode = currNode->middle;
+      i++;
+    }
+    else if(word_to_check[i] < currNode->digit) {
+      currNode = currNode->left;
+    }
+    else if(word_to_check[i] > currNode->digit) {
+      currNode = currNode->right;
+    }
+  }
+  if(i == word_to_check.length()) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 
 bool Trie::find(const string& word_to_check)
 {

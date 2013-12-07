@@ -89,6 +89,10 @@ void BogglePlayer::visit(unsigned int row, unsigned int col, string substr, unsi
   //std::cout << "min: " << min << std::endl;
   //std::cout << "substring: " << substring << std::endl;
   visited[row][col] = true;
+  if(trie.isPrefix(substring) == false) {
+    visited[row][col] = false;
+    return;
+  }
   if(substring.length() >= min) {
     if(isInLexicon(substring) == true) {
       words->insert(substring);
