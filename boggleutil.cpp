@@ -68,7 +68,32 @@ void Trie::build(const set<string>& word_list)
         }
       }
       //Create nodes down the middle for the remaining digits
-      else if(j>0 && wordCount != 1) {
+      else if(j>0) {
+        if(currNode->middle == 0) {
+          currNode->middle = new TrieNode(currWord[j],false);
+          currNode = currNode->middle;
+        }
+        else {
+          while(currNode->digit != currWord[j]) {
+            if(currWord[j] < currNode->digit) {
+              if(currNode->left == 0) {
+                currNode->left = new TrieNode(currWord[j],false);
+              }
+              currNode = currNode->left;
+            }
+            else if(currWord[j] > currNode->digit) {
+              if(currNode->right == 0) {
+                currNode->right = new TrieNode(currWord[j],false);
+              }
+                currNode = currNode->left;
+            }
+            else {
+              currNode = currNode->middle;
+            }
+          }
+        }
+      }
+/*
         if(j == 1) {
           prevNode = currNode;
           currNode = currNode->middle;
@@ -105,6 +130,7 @@ void Trie::build(const set<string>& word_list)
 
         
       //  }
+*/
 
 /*
         if(currNode->middle == 0) {
