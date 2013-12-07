@@ -24,7 +24,7 @@ void Trie::build(const set<string>& word_list)
           root->end = true;
         }
         currNode = root;
-          cout << "Root :" << root->digit << endl;
+        cout << "Root :" << currNode->digit << endl;
       }
       //Determines the placement of the first letter of the following words
       else if(j == 0 && wordCount != 1) {
@@ -69,26 +69,31 @@ void Trie::build(const set<string>& word_list)
       }
       //Create nodes down the middle for the remaining digits
       else if(j>0) {
+        //cout << "word: " << currWord[j] << endl;
+        //cout << "j " << j << endl; 
+        //cout <<currNode->digit << endl;
         if(currNode->middle == 0) {
           currNode->middle = new TrieNode(currWord[j],false);
           currNode = currNode->middle;
+                  
+          //cout << "Made middle: " << currNode->digit << endl;
         }
         else {
+          currNode = currNode->middle;
           while(currNode->digit != currWord[j]) {
             if(currWord[j] < currNode->digit) {
               if(currNode->left == 0) {
                 currNode->left = new TrieNode(currWord[j],false);
               }
               currNode = currNode->left;
+          //cout << "Made left: " << currNode->digit << endl;
             }
             else if(currWord[j] > currNode->digit) {
               if(currNode->right == 0) {
                 currNode->right = new TrieNode(currWord[j],false);
               }
-                currNode = currNode->left;
-            }
-            else {
-              currNode = currNode->middle;
+              currNode = currNode->right;
+          //cout << "Made right: " << currNode->digit << endl;
             }
           }
         }
@@ -144,7 +149,7 @@ void Trie::build(const set<string>& word_list)
         }
         else if(currNode->middle->digit == currWord[j]) {
 */          
-      }
+      
     }
   }
 }
@@ -178,7 +183,7 @@ bool Trie::find(const string& word_to_check)
       cout << "leftshift word" << endl;
     }
   }    
-  return false;
+  return wordRetrieved == word_to_check;
 }
 
 TrieNode::~TrieNode()
